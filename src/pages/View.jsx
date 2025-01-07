@@ -1,27 +1,70 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import Header from '../components/Header'
 
 const View = () =>{
+  const [product,setProduct]=useState({})
+  
+    const {id} =useParams()
+    console.log(id);
+    // const {allProducts}=useSelector(state=>state.productReducer)
+    // console.log(allProducts);
+
+    useEffect(()=>{
+      if (sessionStorage.getItem("allproducts")) {
+        const allProducts =JSON.parse(sessionStorage.getItem("allproducts"))
+        console.log(allProducts.find(item=>item.id==id));
+        setProduct(allProducts.find(item=>item.id==id))
+        
+      }
+      // allProducts.find(item=>item.id==id)
+      console.log(product);
+      
+    },[])
+
     return(
         <>
         <Header/>
         <div className='flex flex-col mx-5'>
             <div className='grid grid-cols-2 items-center h-screen'>
-                <img width={'100%'} height={'200px'} src="https://m.media-amazon.com/images/I/41JaRhOS3CL.jpg" alt="" />
+                <div>
+                  <img width={'100%'} height={'200px'} src={product?.thumbnail} alt="" />
+                  <div className='flex justify-between mt-5'>
+                               <button className='bg-blue-600 text-white p-2 rounded'>add to wishlist</button>
+                               <button className='bg-green-600 text-white p-2 rounded'>add to cart</button>
+  
+                  </div>
+                </div>
+
                  <div>
-                     <h3 className='font-bold'>PID:id</h3>
-                     <h1 className='text-5xl font-bold'>Product Name</h1>
-                     <h4 className='font-bold text-red-600 text-2xl'>$ 250</h4>
-                     <h4>Brand : brand</h4>
-                     <h4>Category : Category</h4>
+                     <h3 className='font-bold'>PID:{product?.id}</h3>
+                     <h1 className='text-5xl font-bold'>{product?.title}</h1>
+                     <h4 className='font-bold text-red-600 text-2xl'>$ {`${product?.price}`}</h4>
+                     <h4>Brand : {product?.brand}</h4>
+                     <h4>Category : {product?.category}</h4>
                      <p>
-                         <span className='font-bold'>Discription </span>:Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit quasi adipisci magnam tempore in repellendus voluptatem expedita, vitae ipsum labore deleniti ipsam excepturi et aliquam qui assumenda autem accusantium officiis!
-                         <div className='flex justify-between mt-5'>
-                             <button className='bg-blue-600 text-white p-2 rounded'>add to wishlist</button>
-                             <button className='bg-green-600 text-white p-2 rounded'>add to cart</button>
+                         <span className='font-bold'>Discription </span>:{product?.description}
+                        
+                     </p>
+                     <h3 className='font-bold'>Client Review</h3>
+                     {
+                       product?.reviews?.length>0?
+                       product?.reviews?.map(item=>(
+                         <div key={item.date} className='shadow-border p-2 mb-2'>
+                           <h5>
+                             <span className='font-bold'>{item?.reviewerName}</span>: <span>{item?.comment}</span>
+                           </h5>
+                           <p>Rating :{item?.rating} <i className='fa-solid fa-star text-yellow-400'></i> </p>
 
                          </div>
-                     </p>
+
+                       ))
+
+                       
+                       :
+                       <div>No review yet!!!</div>
+                     }
                  </div>
             </div>
         </div>

@@ -6,6 +6,7 @@ import Cart from './pages/Cart'
 import Home from './pages/Home'
 import Pnf from './pages/Pnf'
 import View from './pages/View'
+
 import Wishlist from './pages/Wishlist'
 
 function App() {
