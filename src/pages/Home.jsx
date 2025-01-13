@@ -21,6 +21,19 @@ const Home = () =>{
 
     },[])
 
+    const navigateToPrevPage =()=>{
+        if(currentPage!=1){
+            setCurrentPage(currentPage-1)
+        }
+
+    }
+    const navigateToNextPage =()=>{
+        if(currentPage!=totalPage){
+            setCurrentPage(currentPage+1)
+        }
+
+    }
+
     
     return(
         <>
@@ -40,7 +53,7 @@ const Home = () =>{
                     {
                         
                      allProducts?.length>0 ?
-                     allProducts?.map(product=>(
+                     visibleAllProduct?.map(product=>(
                         <div key={product?.id} className='rounded border p-2 shadow'>
                         <img width={'100%'} height={'100%'} src={product?.thumbnail} alt="" />
                         <div className='text-center'>
@@ -63,7 +76,16 @@ const Home = () =>{
                 </div>
             }
 
+        <div className='text 2xl mt-20 text-center font-bold '>
+            <span onClick={navigateToPrevPage} className='curser-pointer'><i className='fa-solid fa-backward me-5'></i></span>
+            <span>{currentPage}  OF {totalPage}</span>
+            <span onClick={navigateToNextPage}  className='curser-pointer'><i className='fa-solid fa-forward ms-5'></i></span>
+
         </div>
+
+        </div>
+
+        
         </>
     )
 }
